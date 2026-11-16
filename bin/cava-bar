@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Run cava in raw mode for the bar visualizer: one line per frame, bar heights 0-100.
+#   cava-bar [BARS] [FRAMERATE]
+set -euo pipefail
+bars=${1:-8}
+[[ $bars =~ ^[0-9]+$ ]] && (( bars >= 2 && bars <= 64 )) || bars=10
+fps=${2:-60}
+[[ $fps =~ ^[0-9]+$ ]] && (( fps >= 10 && fps <= 144 )) || fps=60
+dir="${XDG_RUNTIME_DIR:-/tmp}/specialkapa.visualizer"
+mkdir -p "$dir"
+conf="$dir/cava.conf"
+cat >"$conf" <<CONF
+[general]
+framerate = $fps
+bars = $bars
+autosens = 1
+sleep_timer = 3
+
+[input]
+method = pipewire
+source = auto
+
+[output]
+method = raw
+raw_target = /dev/stdout
+data_format = ascii
+ascii_max_range = 100
+bar_delimiter = 59
+frame_delimiter = 10
+channels = mono
+mono_option = average
+
+[smoothing]
+noise_reduction = 77
+monstercat = 1
+CONF
+exec cava -p "$conf"

@@ -1,0 +1,18 @@
+// Run: node tests/logic.test.cjs
+const fs = require("fs"), path = require("path"), assert = require("assert")
+const src = fs.readFileSync(path.join(__dirname, "..", "Logic.js"), "utf8").replace(/^\.pragma library\s*/, "")
+const m = { exports: {} }; new Function("module", src)(m); const L = m.exports
+assert.deepStrictEqual(L.parseLevels("0;50;100;", 3), [0, 0.5, 1])
+assert.deepStrictEqual(L.parseLevels("7;bad;-4;999", 5), [0.07, 0, 0, 1, 0])
+assert.strictEqual(L.clampBars("abc"), 10)
+assert.strictEqual(L.clampBars(1000), 48)
+const theme = L.themeColors('accent = "#7aa2f7"\nbright_cyan = "#0db9d7"\nblue = "#7aa2f7"\nbright_magenta = "#bb9af7"\nbad = "red"\n')
+assert.deepStrictEqual(L.gradientColors("", theme, "#fff"), ["#0db9d7", "#7aa2f7", "#bb9af7"])
+assert.deepStrictEqual(L.gradientColors("#74c7ec, nope ,#cba6f7", theme, "#fff"), ["#74c7ec", "#cba6f7"])
+assert.deepStrictEqual(L.gradientColors("", {}, "#ffffff"), ["#ffffff", "#ffffff", "#ffffff"])
+const d = L.wavePath([0, 1, 0.5], 100, 20, false)
+assert.ok(d.startsWith("M 0 20 L 0 20 C") && d.endsWith("L 100 20 Z"), d)
+const dm = L.wavePath([0.5, 1], 50, 20, true)
+assert.ok(dm.startsWith("M 0 10") && dm.endsWith("Z"), dm)
+assert.strictEqual(L.wavePath([1], 10, 10, false), "")
+console.log("visualizer logic: OK")

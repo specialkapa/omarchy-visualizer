@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "id": "specialkapa.visualizer",
+  "name": "Audio Visualizer",
+  "version": "0.2.0",
+  "author": "specialkapa",
+  "license": "MIT",
+  "description": "YASB-style audio spectrum in the bar: cava-driven bars or waves with a theme-colored loudness gradient, at 60 fps. Runs only while a media player is playing. Click opens rmpc.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Visualizer.qml"
+  },
+  "barWidget": {
+    "displayName": "Audio Visualizer",
+    "description": "Sound bars that move with the audio while something plays. Click to open rmpc.",
+    "category": "Media",
+    "defaultSection": "right",
+    "allowMultiple": false,
+    "defaults": {
+      "bars": 10,
+      "style": "bars",
+      "barWidth": 4,
+      "barSpacing": 2,
+      "height": 60,
+      "gradient": true,
+      "colors": "",
+      "hideWhenIdle": true
+    },
+    "schema": [
+      {
+        "key": "style",
+        "type": "enum",
+        "label": "Style",
+        "options": [
+          "bars",
+          "bars_mirrored",
+          "waves",
+          "waves_mirrored"
+        ],
+        "defaultValue": "bars",
+        "description": "bars grow up from the bottom; waves draw one smooth curve; mirrored versions grow both ways from the middle."
+      },
+      {
+        "key": "bars",
+        "type": "integer",
+        "label": "Number of bars (4-48)",
+        "defaultValue": 10
+      },
+      {
+        "key": "barWidth",
+        "type": "integer",
+        "label": "Bar width (px)",
+        "defaultValue": 4
+      },
+      {
+        "key": "barSpacing",
+        "type": "integer",
+        "label": "Space between bars (px)",
+        "defaultValue": 2
+      },
+      {
+        "key": "height",
+        "type": "integer",
+        "label": "Height (% of the bar)",
+        "defaultValue": 60
+      },
+      {
+        "key": "gradient",
+        "type": "boolean",
+        "label": "Color gradient by loudness",
+        "defaultValue": true
+      },
+      {
+        "key": "colors",
+        "type": "string",
+        "label": "Custom colors",
+        "defaultValue": "",
+        "description": "Up to three hex colors, quiet to loud, e.g. #74c7ec,#89b4fa,#cba6f7. Empty uses the theme's cyan, blue and magenta."
+      },
+      {
+        "key": "hideWhenIdle",
+        "type": "boolean",
+        "label": "Hide when nothing is playing",
+        "defaultValue": true
+      }
+    ]
+  }
+}
